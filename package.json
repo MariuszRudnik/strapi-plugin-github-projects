@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -65,7 +65,7 @@
     "displayName": "Github Project",
     "description": ""
   },
-  "name": "github-project",
+  "name": "@mr-json/strapi-plugin-github-project",
   "description": "",
   "license": "MIT",
   "author": "mrjson <mariuszjson@gmail.com>"

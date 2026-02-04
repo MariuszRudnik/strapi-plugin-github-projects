@@ -26,7 +26,7 @@ Set the following environment variables in your Strapi application:
 ### Installation
 
 ```bash
-npm install github-project
+npm install @mr-json/strapi-plugin-github-project
 ```
 
 ---
@@ -53,5 +53,5 @@ Ustaw następujące zmienne środowiskowe w aplikacji Strapi:
 ### Instalacja
 
 ```bash
-npm install github-project
+npm install @mr-json/strapi-plugin-github-project
 ```
