@@ -65,7 +65,7 @@
     "displayName": "Github Project",
     "description": ""
   },
-  "name": "@mr-json/strapi-plugin-github-project",
+  "name": "@mr-json/strapi-plugin-github-projects",
   "description": "",
   "license": "MIT",
   "author": "mrjson <mariuszjson@gmail.com>"
