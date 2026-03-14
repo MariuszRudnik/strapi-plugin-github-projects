@@ -1,5 +1,5 @@
 {
-  "version": "1.0.4",
+  "version": "1.0.5",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -23,8 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "strapi-plugin build && npm run copy:components",
-    "copy:components": "mkdir -p dist/server/components && cp -r server/src/components/* dist/server/components/",
+    "build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",

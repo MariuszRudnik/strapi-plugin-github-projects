@@ -44,13 +44,6 @@ export default {
       multiple: false,
       required: false,
     },
-    urlVideos: {
-      type: "component",
-      component: "plugin::github-project.project.video-url",
-      repeatable: true,
-      required: false,
-      description: "Tablica linków do filmów",
-    },
     gallery: {
       type: "media",
       allowedTypes: ["images"],
