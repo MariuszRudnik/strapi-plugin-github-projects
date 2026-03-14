@@ -44,5 +44,24 @@ export default {
       multiple: false,
       required: false,
     },
+    urlVideos: {
+      type: "component",
+      component: "project.video-url",
+      repeatable: true,
+      required: false,
+      description: "Tablica linków do filmów",
+    },
+    gallery: {
+      type: "media",
+      allowedTypes: ["images"],
+      multiple: true,
+      required: false,
+      description: "Galeria zdjęć (karuzela)",
+    },
+    customSettings: {
+      type: "json",
+      required: false,
+      description: "Dodatkowe ustawienia projektu (dowolne klucze i wartości w formacie JSON)",
+    },
   },
 };
