@@ -8,7 +8,7 @@
     "url": {
       "type": "string",
       "required": true,
-      "description": "Link do filmu"
+      "description": "Link do filmu (YouTube, Vimeo, itp.)"
     }
   }
 }

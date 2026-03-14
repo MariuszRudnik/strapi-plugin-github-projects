@@ -46,7 +46,7 @@ export default {
     },
     urlVideos: {
       type: "component",
-      component: "project.video-url",
+      component: "plugin::github-project.project.video-url",
       repeatable: true,
       required: false,
       description: "Tablica linków do filmów",

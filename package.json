@@ -23,7 +23,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "strapi-plugin build",
+    "build": "strapi-plugin build && npm run copy:components",
+    "copy:components": "mkdir -p dist/server/components && cp -r server/src/components/* dist/server/components/",
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
