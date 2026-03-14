@@ -8,13 +8,25 @@ const README_BASE = "https://raw.githubusercontent.com";
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
   getProjectForRepo: async (repo: { id: number }) => {
     const { id } = repo;
-    const matchingProject = await strapi.entityService.findMany("plugin::github-project.project", {
-      filters: {
-        repositoryId: id,
-      },
+    const matching = await strapi.entityService.findMany("plugin::github-project.project", {
+      filters: { repositoryId: id },
     });
-    if (matchingProject.length === 1) return matchingProject[0].id;
-    return null;
+    if (matching.length !== 1) return null;
+    const entity = matching[0];
+    const documentId = entity.documentId ?? entity.document_id ?? null;
+    if (documentId) return { documentId, id: entity.id };
+    try {
+      const [row] = await strapi.db
+        .connection("projects")
+        .where("repository_id", id)
+        .select("id", "document_id")
+        .limit(1);
+      return row?.document_id
+        ? { documentId: row.document_id, id: row.id }
+        : { documentId: null, id: entity.id };
+    } catch {
+      return { documentId: null, id: entity.id };
+    }
   },
 
   async getRepos(): Promise<unknown> {
@@ -51,7 +63,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
               ? md().render(res.data).replaceAll("\n", "<br>")
               : null;
 
-          const projectId = await strapi
+          const project = await strapi
             .plugin("github-project")
             .service("getReposService")
             .getProjectForRepo({ id });
@@ -63,7 +75,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             url: html_url,
             default_branch: branch,
             longDescription,
-            projectId,
+            projectId: project?.id ?? null,
+            projectDocumentId: project?.documentId ?? null,
           };
         })
       );

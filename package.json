@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -35,6 +35,7 @@
     "@octokit/request": "^10.0.7",
     "@strapi/design-system": "^2.0.0-rc.30",
     "@strapi/icons": "^2.0.0-rc.30",
+    "axios": "^1.13.6",
     "markdown-it": "^14.1.0",
     "react-intl": "^8.1.1"
   },
@@ -52,8 +53,8 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^5",
     "@strapi/sdk-plugin": "^5.4.0",
+    "@strapi/strapi": "^5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.3",

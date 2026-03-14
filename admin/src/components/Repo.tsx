@@ -17,6 +17,7 @@ import {
 
 import { Pencil, Plus, Trash } from "@strapi/icons";
 import { useFetchClient } from "@strapi/strapi/admin";
+import { useLocation } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { BulkActions } from "./BulkActions";
 import ConfirmationDialog from "./ConfirmationDialog";
@@ -27,6 +28,7 @@ type RepoItem = {
   shortDescription: string | null;
   url: string;
   projectId?: number | null;
+  projectDocumentId?: string | null;
 };
 const COL_COUNT = 10;
 
@@ -56,6 +58,8 @@ export default function Repo() {
   const isIndeterminate = selectedRepos.length > 0 && selectedRepos.length < repos.length;
 
   const { get, post, del: deleteRequest } = useFetchClient();
+  const { pathname } = useLocation();
+  const basePath = pathname.split("/plugins/")[0] || "/dashboard";
 
   useEffect(() => {
     setLoading(true);
@@ -123,16 +127,8 @@ export default function Repo() {
     try {
       const { data } = await post("/github-project/project", repo);
       if (data?.data) {
-        setRepos(
-          repos.map((item) =>
-            item.id !== repo.id
-              ? item
-              : {
-                  ...item,
-                  projectId: data.data.id,
-                }
-          )
-        );
+        const { data: repoData } = await get("/github-project/repo");
+        setRepos(Array.isArray(repoData?.data) ? repoData.data : []);
         showAlert({
           title: "Project created",
           message: `Successfully created project ${data.data.name ?? repo.name}`,
@@ -152,9 +148,8 @@ export default function Repo() {
   const deleteProject = async (projectId: string | number) => {
     try {
       await deleteRequest(`/github-project/project/${projectId}`);
-      setRepos(
-        repos.map((item) => (item.projectId === projectId ? { ...item, projectId: null } : item))
-      );
+      const { data } = await get("/github-project/repo");
+      setRepos(Array.isArray(data?.data) ? data.data : []);
       showAlert({
         title: "Project deleted",
         message: "Successfully deleted project",
@@ -240,7 +235,7 @@ export default function Repo() {
         </Thead>
         <Tbody>
           {(Array.isArray(repos) ? repos : []).map((repo) => {
-            const { id, name, shortDescription, url, projectId } = repo;
+            const { id, name, shortDescription, url, projectId, projectDocumentId } = repo;
 
             return (
               <Tr key={id}>
@@ -276,17 +271,15 @@ export default function Repo() {
                 <Td>
                   {projectId ? (
                     <Flex>
-                      <Link
-                        to={`/content-manager/collwxrionType/plugin:github-project/${projectId}`}
-                      >
-                        <IconButton
-                          onClick={() => console.log("edit")}
-                          aria-label="Edit"
-                          borderWidth={0}
+                      {projectDocumentId && (
+                        <Link
+                          href={`${basePath}/content-manager/collection-types/plugin::github-project.project/${projectDocumentId}`}
                         >
-                          <Pencil />
-                        </IconButton>
-                      </Link>
+                          <IconButton aria-label="Edit" borderWidth={0} as="span">
+                            <Pencil />
+                          </IconButton>
+                        </Link>
+                      )}
                       <Box paddingLeft={1}>
                         <IconButton
                           onClick={() =>
