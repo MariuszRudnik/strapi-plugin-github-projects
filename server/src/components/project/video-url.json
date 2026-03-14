@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_plugin_github_project_video_urls",
+  "info": {
+    "displayName": "Video URL",
+    "icon": "play"
+  },
+  "attributes": {
+    "url": {
+      "type": "string",
+      "required": true,
+      "description": "Link do filmu"
+    }
+  }
+}
