@@ -39,9 +39,11 @@ export default {
     url: {
       type: "string",
       required: true,
-      pluginOptions: {
-        i18n: { localized: true },
-      },
+    },
+    website: {
+      type: "string",
+      required: false,
+      description: "URL do strony projektu (live demo, strona WWW)",
     },
     default_branch: {
       type: "string",
@@ -64,9 +66,6 @@ export default {
       allowedTypes: ["images"],
       multiple: false,
       required: false,
-      pluginOptions: {
-        i18n: { localized: true },
-      },
     },
     gallery: {
       type: "media",
@@ -74,9 +73,6 @@ export default {
       multiple: true,
       required: false,
       description: "Galeria zdjęć (karuzela)",
-      pluginOptions: {
-        i18n: { localized: true },
-      },
     },
     customSettings: {
       type: "json",
