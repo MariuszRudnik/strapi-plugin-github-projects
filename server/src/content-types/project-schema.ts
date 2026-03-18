@@ -10,6 +10,11 @@ export default {
   options: {
     draftAndPublish: false,
   },
+  pluginOptions: {
+    i18n: {
+      localized: true,
+    },
+  },
   attributes: {
     repositoryId: {
       type: "biginteger",
@@ -17,6 +22,7 @@ export default {
       description: "GitHub repository id",
       unique: true,
     },
+
     name: {
       type: "string",
       required: true,
