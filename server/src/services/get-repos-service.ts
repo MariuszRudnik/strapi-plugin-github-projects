@@ -75,6 +75,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             url: html_url,
             default_branch: branch,
             longDescription,
+            ownerLogin: owner?.login ?? null,
             projectId: project?.id ?? null,
             projectDocumentId: project?.documentId ?? null,
           };

@@ -1,3 +1,13 @@
+async function getEnabledLocales(strapi) {
+  try {
+    const localesService = strapi.plugin("i18n").service("locales");
+    const locales = (await localesService.findMany?.()) ?? (await localesService.find?.());
+    return Array.isArray(locales) ? locales.map((l) => l.code) : ["en"];
+  } catch {
+    return ["en"];
+  }
+}
+
 export default ({ strapi }) => ({
   create: async (repo, _userId) => {
     const existing = await strapi.entityService.findMany("plugin::github-project.project", {
@@ -6,16 +16,33 @@ export default ({ strapi }) => ({
     if (existing.length > 0) {
       return existing[0];
     }
-    return strapi.entityService.create("plugin::github-project.project", {
-      data: {
-        repositoryId: repo.id,
-        name: repo.name,
-        shortDescription: repo.shortDescription ?? null,
-        url: repo.url,
-        longDescription: repo.longDescription ?? null,
-        default_branch: repo.default_branch ?? "main",
-      },
+
+    const locales = await getEnabledLocales(strapi);
+    const projectData = {
+      repositoryId: repo.id,
+      name: repo.name,
+      shortDescription: repo.shortDescription ?? null,
+      url: repo.url,
+      longDescription: repo.longDescription ?? null,
+      default_branch: repo.default_branch ?? "main",
+      ownerLogin: repo.ownerLogin ?? repo.owner?.login ?? null,
+    };
+
+    const docs = strapi.documents("plugin::github-project.project");
+    const first = await docs.create({
+      locale: locales[0],
+      data: projectData,
     });
+
+    for (let i = 1; i < locales.length; i++) {
+      await docs.create({
+        documentId: first.documentId,
+        locale: locales[i],
+        data: projectData,
+      });
+    }
+
+    return first;
   },
   delete: async (id) => {
     const docId = Number(id);
