@@ -9,6 +9,8 @@ type ConfirmationDialogProps = {
   onCancel: () => void;
 };
 
+const buttonStretchStyle = { flex: 1, minWidth: 140, minHeight: 40 } as const;
+
 const ConfirmationDialog = ({
   open,
   title,
@@ -40,16 +42,18 @@ const ConfirmationDialog = ({
           </Dialog.Description>
         </Dialog.Body>
         <Dialog.Footer direction="row" gap={3} width="100%" justifyContent="stretch">
+          {/* @ts-expect-error Radix AlertDialog supports asChild; Strapi DS 2.2 types omit it */}
           <Dialog.Cancel asChild>
-            <Button variant="tertiary" size="L" style={{ flex: 1, minWidth: 140, minHeight: 40 }}>
+            <Button variant="tertiary" size="L" style={buttonStretchStyle}>
               Cancel
             </Button>
           </Dialog.Cancel>
+          {/* @ts-expect-error Radix AlertDialog supports asChild; Strapi DS 2.2 types omit it */}
           <Dialog.Action asChild>
             <Button
               variant="danger"
               size="L"
-              style={{ flex: 1, minWidth: 140, minHeight: 40 }}
+              style={buttonStretchStyle}
               onClick={handleConfirm}
             >
               Delete

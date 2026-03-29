@@ -23,40 +23,40 @@
     "dist"
   ],
   "scripts": {
-    "build": "strapi-plugin build",
-    "watch": "strapi-plugin watch",
-    "watch:link": "strapi-plugin watch:link",
-    "verify": "strapi-plugin verify",
+    "build": "pnpm exec strapi-plugin build",
+    "watch": "pnpm exec strapi-plugin watch",
+    "watch:link": "pnpm exec strapi-plugin watch:link",
+    "verify": "pnpm exec strapi-plugin verify",
     "test:ts:front": "run -T tsc -p admin/tsconfig.json",
     "test:ts:back": "run -T tsc -p server/tsconfig.json"
   },
   "dependencies": {
-    "@octokit/endpoint": "^11.0.2",
-    "@octokit/request": "^10.0.7",
-    "@strapi/design-system": "^2.0.0-rc.30",
-    "@strapi/icons": "^2.0.0-rc.30",
-    "axios": "^1.13.6",
-    "markdown-it": "^14.1.0",
-    "react-intl": "^8.1.1"
+    "@octokit/endpoint": "^11.0.3",
+    "@octokit/request": "^10.0.8",
+    "@strapi/design-system": "^2.2.0",
+    "@strapi/icons": "^2.2.0",
+    "axios": "^1.14.0",
+    "markdown-it": "^14.1.1"
   },
   "devDependencies": {
-    "@strapi/sdk-plugin": "^5.4.0",
-    "@strapi/strapi": "^5.33.4",
-    "@strapi/typescript-utils": "^5.33.4",
-    "@types/react": "^19.2.10",
+    "@strapi/sdk-plugin": "^6.0.1",
+    "@strapi/strapi": "^5.40.0",
+    "@strapi/typescript-utils": "^5.40.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "prettier": "^3.8.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.3",
-    "styled-components": "^6.3.8",
-    "typescript": "^5.9.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.2",
+    "styled-components": "^6.3.12",
+    "typescript": "^6.0.2"
   },
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5.4.0",
     "@strapi/strapi": "^5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-intl": "^6.6.2",
     "react-router-dom": "^6.30.3",
     "styled-components": "^6.3.8"
   },

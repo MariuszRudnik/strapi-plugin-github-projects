@@ -270,17 +270,26 @@ export default function Repo() {
                 </Td>
                 <Td>
                   {projectId ? (
-                    <Flex>
-                      {projectDocumentId && (
+                    <Flex gap={1} alignItems="center">
+                      {projectDocumentId ? (
                         <Link
                           href={`${basePath}/content-manager/collection-types/plugin::github-project.project/${projectDocumentId}`}
                         >
-                          <IconButton aria-label="Edit" borderWidth={0} as="span">
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: 32,
+                              height: 32,
+                              cursor: "pointer",
+                            }}
+                          >
                             <Pencil />
-                          </IconButton>
+                          </span>
                         </Link>
-                      )}
-                      <Box paddingLeft={1}>
+                      ) : null}
+                      <Box>
                         <IconButton
                           onClick={() =>
                             projectId &&
@@ -294,7 +303,7 @@ export default function Repo() {
                               onCancel: () => setDeleteProjectDialog(null),
                             })
                           }
-                          aria-label="Delete"
+                          label="Delete project"
                           borderWidth={0}
                         >
                           <Trash />
@@ -304,7 +313,7 @@ export default function Repo() {
                   ) : (
                     <IconButton
                       onClick={() => createProject(repo)}
-                      aria-label="Add"
+                      label="Add project"
                       borderWidth={0}
                     >
                       <Plus />

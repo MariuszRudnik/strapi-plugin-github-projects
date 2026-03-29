@@ -5,28 +5,36 @@ import md from "markdown-it";
 
 const README_BASE = "https://raw.githubusercontent.com";
 
+type ProjectLinkMeta =
+  | { projectId: number; projectDocumentId: string }
+  | { projectId: number; projectDocumentId: null };
+
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  getProjectForRepo: async (repo: { id: number }) => {
+  getProjectForRepo: async (repo: { id: number }): Promise<ProjectLinkMeta | null> => {
     const { id } = repo;
-    const matching = await strapi.entityService.findMany("plugin::github-project.project", {
+
+    const doc = await strapi.documents("plugin::github-project.project").findFirst({
       filters: { repositoryId: id },
     });
-    if (matching.length !== 1) return null;
-    const entity = matching[0];
-    const documentId = entity.documentId ?? entity.document_id ?? null;
-    if (documentId) return { documentId, id: entity.id };
-    try {
-      const [row] = await strapi.db
-        .connection("projects")
-        .where("repository_id", id)
-        .select("id", "document_id")
-        .limit(1);
-      return row?.document_id
-        ? { documentId: row.document_id, id: row.id }
-        : { documentId: null, id: entity.id };
-    } catch {
-      return { documentId: null, id: entity.id };
+    if (doc?.id != null && doc.documentId != null) {
+      return {
+        projectId: Number(doc.id),
+        projectDocumentId: String(doc.documentId),
+      };
     }
+
+    const matchingProject = await strapi.entityService.findMany("plugin::github-project.project", {
+      filters: {
+        repositoryId: id,
+      },
+      limit: 1,
+    });
+    if (matchingProject.length !== 1) return null;
+    const row = matchingProject[0] as { id: number; documentId?: string };
+    return {
+      projectId: row.id,
+      projectDocumentId: row.documentId != null ? String(row.documentId) : null,
+    };
   },
 
   async getRepos(): Promise<unknown> {
@@ -63,7 +71,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
               ? md().render(res.data).replaceAll("\n", "<br>")
               : null;
 
-          const project = await strapi
+          const projectMeta = await strapi
             .plugin("github-project")
             .service("getReposService")
             .getProjectForRepo({ id });
@@ -75,9 +83,8 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             url: html_url,
             default_branch: branch,
             longDescription,
-            ownerLogin: owner?.login ?? null,
-            projectId: project?.id ?? null,
-            projectDocumentId: project?.documentId ?? null,
+            projectId: projectMeta?.projectId ?? null,
+            projectDocumentId: projectMeta?.projectDocumentId ?? null,
           };
         })
       );
